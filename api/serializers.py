@@ -1,19 +1,35 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Question,Comment,Vote 
+from .models import Question,Comment,Vote ,Category
 
 
+
+
+
+class CategorySerializer(serializers.ModelSerializer):
+   class Meta:
+       model = Category
+       fields = ["id","name","backgroundImage"]
 
 class ListQuestion(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ["id",'question',"date","time"]
 
+
+
+class Listuser(serializers.ModelSerializer):
+   class Meta:
+       model = User
+       fields = ["id","username"]
+
 class ListComment(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = '__all__'
+   user = Listuser()
+   class Meta:
+       model = Comment
+       fields = ["id","comment","dategenerated","dategenerated2","datenow","time","n_vote","question","user"]
+
 
 # class Listuser(serializers.ModelSerializer):
 #     class Meta:
@@ -45,7 +61,7 @@ class ListQuestionComment(serializers.ModelSerializer):
     comment = serializers.SerializerMethodField()
     class Meta:
         model = Question
-        fields = ['id',"question" , "date" ,"time" ,"comment"]
+        fields = ['id',"question" , "date" ,"time" ,"comment","category_id"]
      
 
     def get_comment(self,obj):

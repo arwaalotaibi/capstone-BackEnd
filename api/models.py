@@ -11,13 +11,23 @@ TYPE_CHOICES = (
    ('c4','C4'),
    )
 
+
+class Category(models.Model):
+   name = models.CharField(max_length=120)
+   backgroundImage = models.ImageField(null=True, blank=True)
+
+   def __str__(self):
+        return self.name
+
+
 class Question(models.Model):
    user = models.ForeignKey(User,on_delete=models.CASCADE)
    question = models.TextField()
    date = models.DateField(auto_now_add=True)
    time = models.TimeField(auto_now_add=True)
    date2 = models.DateTimeField(auto_now_add=True)
-   _type = models.CharField(max_length=33,choices=TYPE_CHOICES,default='---')
+   category = models.ForeignKey(Category,on_delete=models.CASCADE)
+   # _type = models.CharField(max_length=33,choices=TYPE_CHOICES,default='---')
 
    
 class Comment(models.Model):

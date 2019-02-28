@@ -1,14 +1,24 @@
 from rest_framework.generics import ListAPIView,RetrieveUpdateAPIView,DestroyAPIView,RetrieveAPIView,CreateAPIView
 
-from .serializers import ListVote2,ListVote,ListQuestion , ListComment, ListQuestionComment, UserCreateSerializer,UserLoginSerializer
-from .models import Question,Comment,Vote 
+from .serializers import ListVote2,ListVote,ListQuestion , ListComment, ListQuestionComment, UserCreateSerializer,UserLoginSerializer,CategorySerializer
+from .models import Question,Comment,Vote,Category
 from rest_framework.filters import SearchFilter,OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
+
+
+
+class CategoryApiView(ListAPIView):
+   queryset = Category.objects.all()
+   serializer_class = CategorySerializer
+
+
+
 class UserCreateAPIView(CreateAPIView):
+
     serializer_class = UserCreateSerializer
 
 class numberoflikes(APIView):
@@ -21,31 +31,14 @@ class numberoflikes(APIView):
         data = Vote.objects.filter(comment=x).count()
         return Response(data, status=HTTP_200_OK)
 
-class userlikes(APIView):
+class userlikes(ListAPIView):
 
-     # def get(self, request):
-     #    # data = Vote.objects.filter(user=request.user).count()
-     #    # return Response(data, status=HTTP_200_OK)
-
-     #    data = Vote.objects.filter(user=request.user).values()
-     #    serializer = ListVote(data)
-     #    return Response(serializer.data, status=HTTP_200_OK)
     
     serializer_class = ListVote
     def get_queryset(self):
         user = self.request.user
         return Vote.objects.filter(user=user)       
-        #return Vote.objects.filter(user=request.user) 
-    # def get(self, request):
-    #     # data = Question.objects.all()[:1].get()  ;)
-    #     # data = Question.objects.filter(id=2)  :(
-    #     # data = Question.objects.first()     ;)
-    #     # data = Question.objects.filter(user=request.user).all()  :()
-    #     # data = Question.objects.filter(user=request.user).first() ;)
-    #     # serializer = ListQuestion(data)
-    #     data = Vote.objects.filter(user=request.user).first()   # ;)))
-    #     serializer = ListVote(data)
-    #     return Response(serializer.data, status=HTTP_200_OK)
+       
 
 class LastQuestionCommentApiView(APIView):
 
