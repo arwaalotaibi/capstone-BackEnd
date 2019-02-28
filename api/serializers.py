@@ -1,29 +1,44 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Question,Comment,Vote 
+from .models import Question,Comment,Vote,Profile,Category ,NextQuestion 
 
 
+class CategorySerializer(serializers.ModelSerializer):
+  class Meta:
+      model = Category
+      fields = ["id","name","backgroundImage"]
 
 class ListQuestion(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ["id",'question',"date","time"]
 
-class ListComment(serializers.ModelSerializer):
+class ListProfile(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Profile
         fields = '__all__'
 
-# class Listuser(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ["id"]
+class ListNextQuestion(serializers.ModelSerializer):
+    class Meta:
+        model = NextQuestion
+        fields = '__all__'
+class Listuser(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id" ,'username']
 
-class ListCommentV(serializers.ModelSerializer):
+class ListComment(serializers.ModelSerializer):
+    user = Listuser()
     class Meta:
         model = Comment
-        fields = ["id",'comment']
+        fields = ['id','comment','dategenerated','dategenerated2','datenow',"time",'like','question','user']
+
+class ListCommentV(serializers.ModelSerializer):
+    question = ListQuestion()
+    class Meta:
+        model = Comment
+        fields = ["id",'comment','question']
 
 class ListVote(serializers.ModelSerializer):
     comment = ListCommentV()
@@ -58,6 +73,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'password' , 'email' ,'first_name','last_name']
 
+
     def create(self, validated_data):
         email = validated_data['email']
         username = validated_data['username']
@@ -65,9 +81,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
         first_name = validated_data['first_name']
         last_name = validated_data['last_name']
         new_user = User(username=username,email=email,first_name=first_name,last_name=last_name)
+        Profile.objects.create(username=username,first_name=first_name,last_name=last_name)
         new_user.set_password(password)
         new_user.save()
         return validated_data
+
 
 class UserLoginSerializer(serializers.Serializer):   
     def validate(self, data):

@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# DJANGO_CRON_CACHE = 'cron_cache'
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
+    "django_cron",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CRON_CLASSES = [
+    "api.cron.MyCronJob",
+   
+]
+
 
 ROOT_URLCONF = 'backend.urls'
 
