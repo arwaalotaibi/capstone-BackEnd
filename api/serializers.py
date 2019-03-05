@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Question,Comment,Vote 
+from .models import Question,Comment,Vote, Category 
 
 
 
@@ -83,5 +83,10 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Incorrect username/password combination! ")
 
         return data
+
+class CategorySerializer(serializers.ModelSerializer):
+ class Meta:
+     model = Category
+     fields = ['id','name','backgroundImage']
 
 

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import numberoflikes,userlikes,ListlikesApiView,like,Deletecomment,Postcomment,ListQuestionCommentApiView,UserLoginAPIView ,UserCreateAPIView ,LastQuestionCommentApiView
+from .views import numberoflikes,userlikes,ListlikesApiView,like,Deletecomment,Postcomment,ListQuestionCommentApiView,UserLoginAPIView ,UserCreateAPIView ,LastQuestionCommentApiView, CategoryApiView
 
 from rest_framework_jwt.views import obtain_jwt_token
 from django.contrib import admin
@@ -18,5 +18,6 @@ urlpatterns = [
     path('vote/user',userlikes.as_view(),name='last-api'),
     path('comment/',Postcomment.as_view(),name='cc'),
     path('comment/<int:comment_id>/delete/',Deletecomment.as_view(),name='delete-comment'),
+    path('category/',CategoryApiView.as_view(),name='category-api'),
    
 ]

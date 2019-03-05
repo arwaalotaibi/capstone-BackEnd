@@ -37,5 +37,12 @@ class Vote(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     # like = models.BooleanField(default=False)
 
+class Category(models.Model):
+ name = models.CharField(max_length=120)
+ backgroundImage = models.ImageField(null=True, blank=True)
+
+ def __str__(self):
+      return self.name
+
 
 

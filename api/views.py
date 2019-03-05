@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView,RetrieveUpdateAPIView,DestroyAPIView,RetrieveAPIView,CreateAPIView
 
-from .serializers import ListVote2,ListVote,ListQuestion , ListComment, ListQuestionComment, UserCreateSerializer,UserLoginSerializer
-from .models import Question,Comment,Vote 
+from .serializers import ListVote2,ListVote,ListQuestion , ListComment, ListQuestionComment, UserCreateSerializer,UserLoginSerializer, CategorySerializer
+from .models import Question,Comment,Vote, Category
 from rest_framework.filters import SearchFilter,OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
@@ -114,4 +114,8 @@ class UserLoginAPIView(APIView):
             valid_data = serializer.data
             return Response(valid_data, status=HTTP_200_OK)
         return Response(serializer.errors, HTTP_400_BAD_REQUEST)
+
+class CategoryApiView(ListAPIView):
+ queryset = Category.objects.all()
+ serializer_class = CategorySerializer
 
