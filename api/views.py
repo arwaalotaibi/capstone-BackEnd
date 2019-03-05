@@ -52,6 +52,14 @@ class userlikes(ListAPIView):
         user = self.request.user
         return Vote.objects.filter(user=user)       
 
+class isadmin(APIView):
+        
+    def get(self,request):
+        if request.user.is_staff:
+            return Response(True)
+        else:
+            return Response(False)
+
 
 class LastQuestionCommentApiView(APIView):
 
@@ -85,10 +93,22 @@ class Postquestion(APIView):
         y = request.data
        
         questiontext = y["question"]
+        categorytext = y["category"]
               
-        Question.objects.create(question=questiontext)
+        Question.objects.create(question=questiontext,category=categorytext)
         # # Question.objects.create(question="mm")
         # Question.objects.create(question="aaa",user=request.user)
+        return Response({"msg":"success"})
+
+class PostnextQ(APIView):
+
+    def post(self,request):
+       
+        y = request.data
+       
+        questiontext = y["question"]
+        categorytext = y["category"]
+        NextQuestion.objects.create(question=questiontext,category=categorytext)
         return Response({"msg":"success"})
 
 class like(APIView):

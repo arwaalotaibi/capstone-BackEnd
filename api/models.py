@@ -32,10 +32,12 @@ class Question(models.Model):
    date = models.DateField(auto_now_add=True)
    time = models.TimeField(auto_now_add=True)
    date2 = models.DateTimeField(auto_now_add=True)
+   category=models.ForeignKey(Category,on_delete=models.CASCADE)
    # _type = models.CharField(max_length=33,choices=TYPE_CHOICES,default='---')
 
 class NextQuestion(models.Model):
    question = models.TextField()
+   category=models.ForeignKey(Category,on_delete=models.CASCADE)
    status = models.BooleanField(default=False)
    
 class Comment(models.Model):
